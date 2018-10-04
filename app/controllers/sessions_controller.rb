@@ -4,10 +4,11 @@ class SessionsController < ApplicationController
   end
 
   def create
-    @user = current_user.try(:authenticate, params[:user][:password])
+    @user = User.find_by(name: params[:user][:name])
+    @user = @user.try(:authenticate, params[:user][:password])
     return redirect_to '/users/new' unless @user
     session[:user_id] = @user.id
-    redirect_to welcome_path
+    redirect_to '/welcome'
   end
 
   def destroy
